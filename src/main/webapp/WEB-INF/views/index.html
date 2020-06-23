@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/scroolbar.css">
+    <link rel="stylesheet" href="css/main-theme.css">
+    <title>Главная страница</title>
+    <style>
+
+        .bg-database {
+            background: linear-gradient(to top left, powderblue, pink);
+            border-right: white 6px solid;
+            transition: border-right-color 1s linear;
+        }
+
+        .bg-database:hover {
+            border-right-color: darkviolet;
+        }
+
+        .bg-book {
+            background: linear-gradient(to top left, red, orange);
+            border-right: white 6px solid;
+            transition: border-right-color 1s linear;
+        }
+
+        .bg-book:hover {
+            border-right-color: darkviolet;
+        }
+
+        .size {
+            width: 70px;
+            height: 70px;
+        }
+
+        .bg-game {
+            background: linear-gradient(to top left, coral, peachpuff);
+            border-right: white 6px solid;
+            transition: border-right-color 1s linear;
+        }
+
+        .bg-game:hover {
+            border-right-color: darkviolet;
+        }
+    </style>
+</head>
+<body class="container-fluid">
+<div th:replace="templates::navbar"></div>
+<div class="container">
+    <div class="row mt-5 mb-5">
+        <div class="col-md-6  position-relative ">
+            <div class="row p-0 bg-light border">
+                <form action="#" class="col-md-10 m-5" method="post">
+                    <h4 class="text-center ">Вход</h4>
+                    <div class="form-group mt-3">
+                        <input type="text" class="form-control" id="inputLogin" placeholder="Ваш логин">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="inputPassword" placeholder="Пароль">
+                    </div>
+                    <p class="font-weight-light text-center mt-5 mb-2">
+                        Вы можете пользоваться некоторыми возможностями сайта и без входа в систему.
+                    </p>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn mr-2 btn-primary">Войти</button>
+                        <a href="/registration" class="btn ml-2 btn-secondary">Регистрация</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6   position-relative">
+            <div class="row p-0 bg-game border">
+                <div class="col-md-6 mb-md-0 p-md-4">
+                    <img src="images/icon-skill.png" class="w-100" alt="party">
+                </div>
+                <div class="col-md-6 position-static media-body p-4 pl-md-0">
+                    <h5 class="mt-0">Ваше приключение</h5>
+                    <p class="text-justify">
+                        Соберитесь вместе со своими друзьями для путешествий по опасным и интересным местам мира DnD
+                    </p>
+                    <a href="/choose" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="row">
+            <div class="media bg-database position-relative mt-1 mb-1 col-12 p-4">
+                <img src="images/icons.png" class="mr-3 size" alt="Missing">
+                <div class="media-body">
+                    <h5 class="mt-0">База объектов</h5>
+                    <p>
+                        Здесь можно просмотреть уже имеюшиеся расы, классы предметы и т.д. а также добавить новые
+                    </p>
+                    <a href="/database" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="media bg-book position-relative mt-1 mb-1 col-12 p-4">
+                <img src="images/icons.png" class="mr-3 size" alt="Missing">
+                <div class="media-body">
+                    <h5 class="mt-0">Ваша книга</h5>
+                    <p>
+                        Ведущие могут хранить здесь описание сюжетных линий, строить боевые сцены и высчитывать награду
+                    </p>
+                    <a href="/GM" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="media bg-disable position-relative mt-1 mb-1 p-4 col-12">
+                <img src="images/icons.png" class="mr-3 size" alt="Missing">
+                <div class="media-body">
+                    <h5 class="mt-0">Бестиарий</h5>
+                    <p>
+                        Здесь можно просмотреть сведения о существах, населяющих различные миры вселенной DnD (в
+                        разработке)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+</script>
+</body>
+</html>

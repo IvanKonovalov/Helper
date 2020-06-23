@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/scroolbar.css">
+    <link rel="stylesheet" href="css/main-theme.css">
+    <title>База данных</title>
+</head>
+<body class="container-fluid">
+<div th:replace="templates::navbar"></div>
+<div class="container mb-6">
+    <!-- Контент -->
+    <div class="col-md-12 m-0 pl-2 pr-2">
+        <div class="tab-content bg-light border p-4 mt-5">
+            <form class="col-12" action="savechar" method="post">
+                <h2>Данные</h2>
+                <h3 class="mt-3">Основные</h3>
+                <div class="row col-12">
+                    <div class="form-group col-md-3">
+                        <input name="name" class="form-control col-12" id="name"
+                               th:value="${character.getName()}"/>
+                    </div>
+                    <!-- Описание -->
+                    <div class="form-group col-md-3 row">
+                        <input type="number" name="level" class="form-control col-10" id="level"
+                               th:value="${character.getExp()}"/> <span class="col-2">exp.</span>
+                    </div>
+                    <!-- Описание -->
+                    <div class="form-group col-md-3">
+                        <input name="player" class="form-control col-12" id="player"
+                               th:value="${character.getPlayer()}" readonly/>
+                    </div>
+                    <div class="form-group col-md-3 row">
+                        <input name="gold" class="form-control col-10" id="gold" type="number"
+                               th:th:value="${character.getMoney()} "/> <span class="col-2">мм.</span>
+                    </div>
+                </div>
+                <h3 class="mt-3">Предустановки</h3>
+                <div class="row col-12">
+                    <div class="form-group col-md-3">
+                        <input name="backstory" class="form-control col-12" id="backstory"
+                               th:value="${character.getBackstory()}" readonly/>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input name="race" class="form-control col-12" id="race"
+                               th:value="${character.getRace()}" readonly/>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input name="heroclass" class="form-control col-12" id="class"
+                               th:value="${character.getHeroclass()}" readonly/>
+                    </div>
+                </div>
+
+                <h3 class="mt-3">Снаряжение</h3>
+                <div class="row">
+                    <div class="col-md-6 row m-0">
+                        <label for="armor" class="col-4">Броня:</label>
+                        <textarea name="armor" class="form-control col-md-8" th:text="${character.getArmor()}"
+                                  id="armor"></textarea>
+                    </div>
+                    <div class="col-md-6 row m-0">
+                        <label for="weapon" class="col-4">Оружие:</label>
+                        <textarea name="weapon" class="form-control col-md-8" th:text="${character.getWeapon()}"
+                                  id="weapon"></textarea>
+                    </div>
+                </div>
+
+                <h3 class="mt-3">Характеристики</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <span class="col-8">Сила</span>
+                            <input name="chars" type="number" class="form-control col-4"
+                                   th:value="${character.getStr()}"/>
+                        </div>
+                        <div class="row">
+                            <span class="col-8">Ловкость</span>
+                            <input name="chars" type="number" class="form-control col-4"
+                                   th:value="${character.getDex()}"/>
+                        </div>
+                        <div class="row">
+                            <span class="col-8">Телосложение</span>
+                            <input name="chars" type="number" class="form-control col-4"
+                                   th:value="${character.getCon()}"/>
+                        </div>
+                        <div class="row">
+                            <span class="col-8">Интеллект</span>
+                            <input name="chars" type="number" class="form-control col-4"
+                                   th:value="${character.getItl()}"/>
+                        </div>
+                        <div class="row">
+                            <span class="col-8">Мудрость</span>
+                            <input name="chars" type="number" class="form-control col-4"
+                                   th:value="${character.getWsd()}"/>
+                        </div>
+                        <div class="row">
+                            <span class="col-8">Харизма</span>
+                            <input name="chars" type="number" class="form-control col-4"
+                                   th:value="${character.getChr()}"/>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-8 row">
+                        <label for="abilities" class="col-4">Владения:</label>
+                        <textarea class="form-control col-md-8" th:text="${character.getAbilities()}" name="abilities"
+                                  id="abilities"></textarea>
+                    </div>
+                </div>
+                <h3 class="mt-3">Инвентарь</h3>
+                <div class="col-12">
+                    <textarea class="form-control" th:text="${character.getItems()}" name="item"></textarea>
+                </div>
+                <h3 class="mt-3">Магия</h3>
+                <div class="col-12">
+                    <textarea class="form-control" th:text="${character.getMagics()}" name="magics"></textarea>
+                </div>
+
+                <h3 class="mt-3">Навыки</h3>
+                <div class="col-12">
+                    <textarea class="form-control" th:text="${character.getSkills()}" name="skill"></textarea>
+                </div>
+
+                <div class="row mt-5 col-12">
+                    <div class="col-md-6 media-body">
+                        <a href="/charlist" class="stretched-link">
+                            <button class="mt-3 btn btn-primary  btn-block">
+                                <img src="images/left.png" height="30px" width="30px">К экрану выбора
+                            </button>
+                        </a>
+                    </div>
+                    <div class="col-md-6 media-body">
+                        <button class="mt-3 btn btn-primary  btn-block">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="templates::footer"></div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+</script>
+</body>
+</html>
+
+</body>
+</html>

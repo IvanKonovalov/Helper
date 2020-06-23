@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/scroolbar.css">
+    <link rel="stylesheet" href="css/main-theme.css">
+    <title>Создание персонажа</title>
+</head>
+<body class="container-fluid">
+<div th:replace="templates::navbar"></div>
+<div class="row">
+    <!-- Контент -->
+    <div class="col-md-12 m-0 pl-2 pr-2">
+        <div class="tab-content  col-12 bg-light border p-4">
+            <form class="col-12" action="addChar" method="post">
+                <h2>Данные</h2>
+                <div class="row col-12">
+                    <div class="form-group col-md-3">
+                        <label for="name">Имя</label>
+                        <input name="name" class="form-control col-12" id="name" placeholder="Введите имя"/>
+                    </div>
+                    <!-- Описание -->
+                    <div class="form-group col-md-3">
+                        <label for="level">Опыт</label>
+                        <input type="number" name="level" class="form-control col-12" id="level"
+                               placeholder="Введите опыт"/>
+                    </div>
+                    <!-- Описание -->
+                    <div class="form-group col-md-3">
+                        <label for="player">Имя игрока</label>
+                        <input name="player" class="form-control col-12" id="player" placeholder="Введите имя"/>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="gold">Золото</label>
+                        <input name="gold" class="form-control col-12" id="gold" placeholder="Количество золота"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12 row m-0">
+                            <label for="backstory" class="col-6">Выбор предыстории</label>
+                            <select id="backstory" name="backstory" class="form-control col-6">
+                                <option th:each="i : ${backstory}" th:text="${i.getName()}"
+                                        th:value="${i.getName()}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6 row m-0">
+                            <label for="race" class="col-6">Выбор расы</label>
+                            <select id="race" name="race" class="form-control col-6">
+                                <option th:each="i : ${race}" th:text="${i.getName()}"
+                                        th:value="${i.getName()}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 row m-0">
+                            <label for="class" class="col-6 m-0 p-0">Выбор класса</label>
+                            <select id="class" name="heroclass" class="form-control col-6">
+                                <option th:each="i : ${class}" th:text="${i.getName()}"
+                                        th:value="${i.getName()}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6 row m-0">
+                            <label for="armor" class="col-6">Выбор расы</label>
+                            <select id="armor" name="armor" class="form-control col-6">
+                                <option th:each="i : ${armor}" th:text="${i.getName()}"
+                                        th:value="${i.getName()}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 row m-0">
+                            <label for="weapon" class="col-6 m-0 p-0">Выбор класса</label>
+                            <select id="weapon" name="weapon" class="form-control col-6">
+                                <option th:each="i : ${weapon}" th:text="${i.getName()}"
+                                        th:value="${i.getName()}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2>Характеристики</h2>
+                    <div class="form-group row">
+                        <label class="col-sm-6 col-form-label" for="strength">Сила</label>
+                        <div class="col-sm-6">
+                            <input name="chars" type="number" value="0" class="form-control" id="strength"
+                                   placeholder="Введите количество"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-6 col-form-label" for="dexterity">Ловкость</label>
+                        <div class="col-sm-6">
+                            <input name="chars" type="number" value="0" class="form-control" id="dexterity"
+                                   placeholder="Введите количество"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-6 col-form-label" for="constitution">Телосложение</label>
+                        <div class="col-sm-6">
+                            <input name="chars" type="number" value="0" class="form-control" id="constitution"
+                                   placeholder="Введите количество"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-6 col-form-label" for="intelligence">Интеллект</label>
+                        <div class="col-sm-6">
+                            <input name="chars" type="number" value="0" class="form-control" id="intelligence"
+                                   placeholder="Введите количество"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-6 col-form-label" for="wisdom">Мудрость</label>
+                        <div class="col-sm-6">
+                            <input name="chars" type="number" value="0" class="form-control" id="wisdom"
+                                   placeholder="Введите количество"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-6 col-form-label" for="charisma">Харизма</label>
+                        <div class="col-sm-6">
+                            <input name="chars" type="number" value="0" class="form-control" id="charisma"
+                                   placeholder="Введите количество"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- список свойств под спойлером -->
+                <div id="accordion" role="tablist" aria-multiselectable="true">
+                    <!-- Таблица владений -->
+                    <div class="card">
+                        <div class="card-header  m-0 p-0" role="tab" id="headingOne">
+                            <p class="mb-0">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseOne" aria-expanded="true"
+                                   aria-controls="collapseOne" class="list-group-item">
+                                    Владения
+                                </a>
+                            </p>
+                        </div>
+                        <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="card-block">
+                                <table class="table table-sm table-responsive">
+                                    <tbody>
+                                    <tr th:each="i : ${ability}">
+                                        <td><input name="abilities" th:value="${i.getName()}" type="checkbox"/></td>
+                                        <td class="text-justify" th:text="${i.getName()}">...</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Таблица предметов-->
+                    <div class="card">
+                        <div class="card-header  m-0 p-0" role="tab" id="headingTwo">
+                            <p class="mb-0">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseTwo" aria-expanded="true"
+                                   aria-controls="collapseTwo" class="list-group-item">
+                                    Предметы
+                                </a>
+                            </p>
+                        </div>
+                        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="card-block">
+                                <table class="table table-sm table-responsive">
+                                    <tbody>
+                                    <tr th:each="i : ${item}">
+                                        <td><input th:value="${i.getName()}" name="item" type="checkbox"/></td>
+                                        <td class="text-justify" th:text="${i.getName()}">...</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header m-0 p-0" role="tab" id="headingThree">
+                                <p class="mb-0">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseThree" aria-expanded="true"
+                                       aria-controls="collapseThree" class="list-group-item">
+                                        Магия
+                                    </a>
+                                </p>
+                            </div>
+                            <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+                                <div class="card-block">
+                                    <table class="table table-sm table-responsive">
+                                        <tbody>
+                                        <tr th:each="i : ${magic}">
+                                            <td><input th:value="${i.getName()}" name="magics" type="checkbox"/></td>
+                                            <td class="text-justify" th:text="${i.getName()}">
+                                                ...
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header m-0 p-0" role="tab" id="headingFour">
+                                    <p class="mb-0">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapseFour" aria-expanded="true"
+                                           aria-controls="collapseFour" class="list-group-item">
+                                            Навыки
+                                        </a>
+                                    </p>
+                                </div>
+                                <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
+                                    <div class="card-block">
+                                        <table class="table table-sm table-responsive">
+                                            <tbody>
+                                            <tr th:each="i : ${skill}">
+                                                <td><input th:value="${i.getName()}" name="skill" type="checkbox"/></td>
+                                                <td class="text-justify" th:value="${i.getName()}"
+                                                    th:text="${i.getName()}">...
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class=" mt-3 btn btn-primary  btn-block">Окей</button>
+            </form>
+            <div class="row col-12">
+                <div class="col-md-6 media-body">
+                    <a href="/" class="stretched-link">
+                        <button class="mt-3 btn btn-primary  btn-block">
+                            <img src="images/left.png" height="30px" width="30px"> На главную
+                        </button>
+                    </a>
+                </div>
+                <div class="col-md-6 mr-0 media-body">
+                    <a href="/charlist" class="stretched-link">
+                        <button class="mt-3 btn btn-primary  btn-block">
+                            <img src="images/left.png" height="30px" width="30px">К экрану выбора
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+</script>
+</body>
+</html>
+
+</body>
+</html>

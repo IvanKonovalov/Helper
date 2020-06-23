@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/scroolbar.css">
+    <link rel="stylesheet" href="css/main-theme.css">
+    <title>База данных</title>
+</head>
+<body class="container-fluid">
+<div th:replace="templates::navbar"></div>
+<div class="row">
+    <!-- Боковая панель -->
+    <div th:replace="templates::sidepanel"></div>
+    <!-- Контент -->
+    <div class="col-md-9 m-0 pl-2 pr-2">
+        <div class="tab-content bg-light border p-4">
+            <div class="text-center"><h4>Магия</h4></div>
+            <tr th:each="i : ${magic}">
+                <p>
+                <td class="text-justify" th:text="${i.getName()}">...</td>
+                <td class="text-justify" th:text="${i.getDescription()}">...</td>
+                </p>
+            </tr>
+            <form method="post" action="addMagic">
+                <div class="form-group">
+                    <label for="name">Название</label>
+                    <input name="name" class="form-control" id="name" placeholder="Введите название"/>
+                </div>
+                <!-- Описание -->
+                <div class="form-group">
+                    <label for="description">Описание</label>
+                    <textarea name="description" class="form-control" id="description"
+                              placeholder="Введите описание"></textarea>
+                </div>
+
+                <!-- Школа и уровень-->
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6 row m-0">
+                            <label for="school" class="col-6">Выбор школы</label>
+                            <select id="school" name="school" class="form-control col-6">
+                                <option th:each="i : ${school}" th:text="${i.getName()}"
+                                        th:value="${i.getName()}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 row m-0">
+                            <label for="level" class="col-6 m-0 p-0">Уровень</label>
+                            <input name="level" type="number" id="level" class="form-control col-6" placeholder="0"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- casting and duration -->
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6 row m-0">
+                            <label for="casting" class="col-6 m-0 p-0">Кастинг</label>
+                            <input type="number" name="cast" id="casting" class="form-control col-6" placeholder="0"/>
+                        </div>
+                        <div class="col-md-6 row m-0">
+                            <label for="duration" class="col-6 m-0 p-0">Длительность</label>
+                            <input name="duration" type="number" id="duration" class="form-control col-6"
+                                   placeholder="0"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- distance and target -->
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6 row m-0">
+                            <label for="distance" class="col-6 m-0 p-0">Дистанция</label>
+                            <input name="distance" type="number" id="distance" class="form-control col-6"
+                                   placeholder="0"/>
+                        </div>
+                        <div class="col-md-6 row m-0">
+                            <label for="target" class="col-6">Цель</label>
+                            <select id="target" name="target" class="form-control col-6">
+                                <option th:each="i : ${target}" th:text="${i.getTarget()}"
+                                        th:value="${i.getTarget()}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- damage multiplier -->
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4 text-justify">
+                            <label for="multiplier">Множитель урона\лечения</label>
+                        </div>
+                        <!-- damage dice -->
+                        <div class="col-md-8 row m-0">
+                            <input name="multi" type="number" class="form-control col-6" id="multiplier" value="1"
+                                   placeholder="1"/>
+                            <select name="dice" class="form-control col-6">
+                                <option th:each="i : ${dices}" th:text=" d + ${i.getValue()}"
+                                        th:value="${i.getValue()}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <p class="font-weight-light text-center mt-1">
+                    Если навык не обладает такими свойствами, просто проигнорируйте эти поля.
+                </p>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6 row m-0">
+                            <label for="сomponents" class="col-6 m-0 p-0">Компоненты</label>
+                            <input name="component" type="text" id="сomponents" class="form-control col-6"
+                                   placeholder="В С М"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input name="ritual" id="isRitual" type="checkbox">
+                            <label for="isRitual">Ритуал</label>
+                        </div>
+                    </div>
+                    <p class="font-weight-light text-center mt-0 mb-3 col-md-6">
+                        В - Вербальный, С - Соматический, М - Материальный компоненты. Материалы можно выбрать ниже.
+                    </p>
+                </div>
+
+                <!-- список свойств под спойлером -->
+                <div id="accordion" role="tablist" aria-multiselectable="true">
+                    <!-- Таблица компонентов -->
+                    <div class="card">
+                        <div class="card-header  m-0 p-0" role="tab" id="headingOne">
+                            <p class="mb-0">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseOne" aria-expanded="true"
+                                   aria-controls="collapseOne" class="list-group-item">
+                                    Компоненты
+                                </a>
+                            </p>
+                        </div>
+                        <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="card-block">
+                                <table class="table table-sm table-responsive">
+                                    <tbody>
+                                    <tr th:each="i : ${item}">
+                                        <td><input type="checkbox" name="item" th:value="${i.getName()}"/></td>
+                                        <td class="text-justify" th:text="${i.getName()}">...</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class=" mt-3 btn btn-primary  btn-block">Добавить</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+<div th:replace="templates::footer"></div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+</script>
+</body>
+</html>

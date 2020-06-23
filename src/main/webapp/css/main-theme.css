@@ -1,0 +1,130 @@
+body {
+    background-color: #eeeeee;
+    overflow-x: hidden;
+    color: #212529;
+    font-family: "Noto Sans", serif;
+    font-size: 20px;
+}
+
+.border {
+    border: blueviolet 5px solid;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+h5 {
+    color: blueviolet;
+    font-weight: bold;
+    font-stretch: expanded;
+}
+
+h4 {
+    color: blueviolet;
+    font-weight: bold;
+    font-stretch: expanded;
+}
+
+.bg-disable {
+    background-color: darkgrey;
+}
+
+.btn-primary {
+    background-color: blueviolet;
+    border: violet 2px solid;
+}
+
+.btn-primary:hover {
+    background-color: darkviolet;
+    border: violet 2px solid;
+}
+
+.table {
+    color: #212529;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    margin-right: 7px;
+}
+
+.list-group-item {
+    background-color: white;
+    color: #000;
+    transition: background-color 1s linear, color 30ms linear;
+}
+
+.list-group-item:hover {
+    text-decoration: none;
+    background-color: blueviolet;
+    color: white;
+}
+
+.bg-light {
+    background: white;
+}
+
+.footer {
+    background-color: gainsboro;
+}
+
+.btn-outline-dark {
+    border-radius: 8px;
+}
+
+.form-group:focus {
+    border: 3px solid blueviolet;
+}
+
+.form-control:focus {
+    border: 3px solid blueviolet;
+}
+
+.list-group-item:active {
+    background-color: #aaaaaa;
+}
+
+.list-group-item .active {
+    background-color: #aaaaaa;
+}
+
+.font-weight-light {
+    font-size: 14px;
+}
+
+.bg-database {
+    background: linear-gradient(to top left, powderblue, pink);
+    border-right: white 6px solid;
+    transition: border-right-color 1s linear;
+}
+
+.bg-database:hover {
+    border-right-color: darkviolet;
+}
+
+.bg-book {
+    background: linear-gradient(to top left, red, orange);
+    border-right: white 6px solid;
+    transition: border-right-color 1s linear;
+}
+
+.bg-book:hover {
+    border-right-color: darkviolet;
+}
+
+.bg-game {
+    background: linear-gradient(to top left, coral, peachpuff);
+    border-right: white 6px solid;
+    transition: border-right-color 1s linear;
+}
+
+.bg-game:hover {
+    border-right-color: darkviolet;
+}
+
+.size {
+    width: 70px;
+    height: 70px;
+}

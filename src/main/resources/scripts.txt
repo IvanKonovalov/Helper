@@ -1,0 +1,1118 @@
+create table dices
+(
+	value int not null
+);
+
+create unique index dices_value_uindex
+	on dices (value);
+
+alter table dices
+	add constraint dices_pk
+		primary key (value);
+
+
+create table sizes
+(
+	char VARCHAR(5) not null,
+	height int not null,
+	width int not null
+);
+
+create unique index sizes_char_uindex
+	on sizes (char);
+
+alter table sizes
+	add constraint sizes_pk
+		primary key (char);
+
+
+create table speeds
+(
+	speed int not null
+);
+
+create unique index speeds_speed_uindex
+	on speeds (speed);
+
+alter table speeds
+	add constraint speeds_pk
+		primary key (speed);
+
+create table target
+(
+	target VARCHAR(256) not null,
+	radius int not null
+);
+
+create unique index target_target_uindex
+	on target (target);
+
+alter table target
+	add constraint target_pk
+		primary key (target);
+
+create table damage_types
+(
+	name VARCHAR(256) not null
+);
+
+create unique index damage_types_name_uindex
+	on damage_types (name);
+
+alter table damage_types
+	add constraint damage_types_pk
+		primary key (name);
+
+create table weapons_categories
+(
+	name VARCHAR(256) not null,
+	description VARCHAR(1024)
+);
+
+create unique index weapons_categories_name_uindex
+	on weapons_categories (name);
+
+create table weapons_properties
+(
+	name varchar(256) not null,
+	value int,
+	description varchar(1024)
+);
+
+create unique index weapons_properties_name_uindex
+	on weapons_properties (name);
+
+alter table weapons_properties
+	add constraint weapons_properties_pk
+		primary key (name);
+
+create table armors_types
+(
+	name varchar(256) not null,
+	max_bonus int
+);
+
+create unique index armors_types_name_uindex
+	on armors_types (name);
+
+alter table armors_types
+	add constraint armors_types_pk
+		primary key (name);
+
+create table schools_of_magic
+(
+	name varchar(256) not null
+);
+
+create unique index schools_of_magic_name_uindex
+	on schools_of_magic (name);
+
+alter table schools_of_magic
+	add constraint schools_of_magic_pk
+		primary key (name);
+
+create table levels
+(
+	number int not null,
+	required_exp int not null,
+	bonus int
+);
+
+create unique index levels_number_uindex
+	on levels (number);
+
+create unique index levels_required_exp_uindex
+	on levels (required_exp);
+
+alter table levels
+	add constraint levels_pk
+		primary key (number);
+
+create table magic_sockets
+(
+	class_name varchar(256) not null,
+	level int not null
+		constraint level_fk
+			references levels
+				on update cascade on delete set null,
+	"1" int,
+	"2" int,
+	"3" int,
+	"4" int,
+	"5" int
+);
+
+create unique index magic_sockets_class_name_uindex
+	on magic_sockets (class_name);
+
+alter table magic_sockets
+	add constraint magic_sockets_pk
+		primary key (class_name);
+
+create table armors
+(
+	name varchar(256) not null,
+	description varchar(2048) not null,
+	ac int not null,
+	required_str int,
+	price int not null,
+	weight int not null,
+	type varchar(256)
+		constraint armors_fk
+			references armors_types
+				on update cascade on delete set null,
+	is_hindrance boolean default false not null
+);
+
+create unique index armors_name_uindex
+	on armors (name);
+
+alter table armors
+	add constraint armors_pk
+		primary key (name);
+
+create table weapons
+(
+	name varchar(256) not null,
+	description varchar(2048) not null,
+	is_range_weapon boolean default false not null,
+	damage_type varchar(256) not null,
+	damage_multiplier int default 1 not null,
+	damage_dice int not null
+		constraint weapons_dices_value_fk
+			references dices
+				on update cascade on delete set null,
+	price int not null,
+	weight int not null,
+	weapon_category varchar(256) not null
+		constraint weapons_weapons_categories_name_fk
+			references weapons_categories
+				on update cascade on delete set null
+);
+
+create unique index weapons_name_uindex
+	on weapons (name);
+
+alter table weapons
+	add constraint weapons_pk
+		primary key (name);
+
+create table from_weapons_to_properies
+(
+	name_weapon varchar(256) not null
+		constraint from_weapons_to_properies_weapons_name_fk
+			references weapons
+				on update cascade on delete set null,
+	name_property varchar(256) not null
+		constraint from_weapons_to_properies_weapons_properties_name_fk
+			references weapons_properties
+				on update cascade on delete set null,
+	id serial not null
+);
+
+comment on table from_weapons_to_properies is 'many to many: list of properties of every weapons';
+
+create unique index from_weapons_to_properies_id_uindex
+	on from_weapons_to_properies (id);
+
+alter table from_weapons_to_properies
+	add constraint from_weapons_to_properies_pk
+		primary key (id);
+
+create table pounches
+(
+	id int not null,
+	pm int default 0 not null,
+	em int default 0 not null,
+	gm int default 0 not null,
+	sm int default 0 not null,
+	km int default 0 not null
+);
+
+create unique index pounches_id_uindex
+	on pounches (id);
+
+alter table pounches
+	add constraint pounches_pk
+		primary key (id);
+
+create table shields
+(
+	name varchar(256) not null,
+	description varchar(1024) not null,
+	ac int not null
+);
+
+create unique index shields_name_uindex
+	on shields (name);
+
+alter table shields
+	add constraint shields_pk
+		primary key (name);
+
+create table items
+(
+	name varchar(256) not null,
+	description varchar(1024) not null,
+	price int not null,
+	weight int not null
+);
+
+create unique index items_name_uindex
+	on items (name);
+
+alter table items
+	add constraint items_pk
+		primary key (name);
+
+create table abilities
+(
+	name varchar(256) not null,
+	description varchar(1024) not null
+);
+
+create unique index abilities_name_uindex
+	on abilities (name);
+
+alter table abilities
+	add constraint abilities_pk
+		primary key (name);
+
+create table from_abilities_to_weapon_category
+(
+	id serial not null,
+	ability varchar(256) not null
+		constraint from_abilities_to_weapon_category_abilities_name_fk
+			references abilities
+				on update cascade on delete set null,
+	weapon_category varchar(256) not null
+		constraint from_abilities_to_weapon_category_weapons_categories_name_fk
+			references weapons_categories
+				on update cascade on delete set null
+);
+
+comment on table from_abilities_to_weapon_category is 'many to many';
+
+create unique index from_abilities_to_weapon_category_id_uindex
+	on from_abilities_to_weapon_category (id);
+
+alter table from_abilities_to_weapon_category
+	add constraint from_abilities_to_weapon_category_pk
+		primary key (id);
+
+create table from_abilities_to_armor_type
+(
+	id serial not null,
+	ability varchar(256) not null
+		constraint from_abilities_to_armor_type_abilities_name_fk
+			references abilities
+				on update cascade on delete set null,
+	armor_type varchar(256) not null
+		constraint from_abilities_to_armor_type_armors_types_name_fk
+			references armors_types
+				on update cascade on delete set null
+);
+
+comment on table from_abilities_to_armor_type is 'many to many';
+
+create unique index from_abilities_to_armor_type_id_uindex
+	on from_abilities_to_armor_type (id);
+
+alter table from_abilities_to_armor_type
+	add constraint from_abilities_to_armor_type_pk
+		primary key (id);
+
+create table from_ability_to_item
+(
+	id serial not null,
+	ability varchar(256) not null
+		constraint from_ability_to_item_abilities_name_fk
+			references abilities
+				on update cascade on delete set null,
+	item varchar not null
+		constraint from_ability_to_item_items_name_fk
+			references items
+				on update cascade on delete set null
+);
+
+create unique index from_ability_to_item_id_uindex
+	on from_ability_to_item (id);
+
+alter table from_ability_to_item
+	add constraint from_ability_to_item_pk
+		primary key (id);
+
+
+
+create table skills
+(
+	name varchar(256) not null,
+	description varchar(2048) not null,
+	damage_dice int
+		constraint skills_dices_value_fk
+			references dices
+				on update cascade on delete set null,
+	damage_multiplier int default 0 not null
+);
+
+create unique index skills_name_uindex
+	on skills (name);
+
+alter table skills
+	add constraint skills_pk
+		primary key (name);
+
+create table backstories
+(
+	name varchar(256) not null,
+	description varchar(4096) not null
+);
+
+create unique index backstories_name_uindex
+	on backstories (name);
+
+alter table backstories
+	add constraint backstories_pk
+		primary key (name);
+
+create table from_backstories_to_items
+(
+	id serial not null
+		constraint from_backstories_to_items_pk
+			primary key,
+	backstory varchar(256) not null
+		constraint from_backstories_to_items_backstories_name_fk
+			references backstories
+				on update cascade on delete set null,
+	item varchar(256) not null
+		constraint from_backstories_to_items_items_name_fk
+			references items
+				on update cascade on delete set null
+);
+
+alter table from_backstories_to_items owner to postgres;
+
+create unique index from_backstories_to_items_id_uindex
+	on from_backstories_to_items (id);
+
+create table from_backstories_to_abilities
+(
+	backstory varchar(256) not null
+		constraint from_backstories_to_abilities_backstories_name_fk
+			references backstories
+				on update cascade on delete set null,
+	ability varchar(256) not null
+		constraint from_backstories_to_abilities_abilities_name_fk
+			references abilities
+				on update cascade on delete set null,
+	id serial not null
+);
+
+comment on table from_backstories_to_abilities is 'many to many';
+
+create unique index from_backstories_to_abilities_id_uindex
+	on from_backstories_to_abilities (id);
+
+alter table from_backstories_to_abilities
+	add constraint from_backstories_to_abilities_pk
+		primary key (id);
+
+alter table from_abilities_to_items rename to from_abilities_to_items;
+
+alter table from_abilities_to_weapon_category rename to from_abilities_to_weapon_categories;
+
+alter table from_abilities_to_armor_type rename to from_abilities_to_armor_types;
+
+create table classes
+(
+	name varchar(256) not null,
+	description varchar(2048) not null
+);
+
+create unique index classes_name_uindex
+	on classes (name);
+
+alter table classes
+	add constraint classes_pk
+		primary key (name);
+
+create table from_classes_to_skiils
+(
+	class varchar(256) not null
+		constraint from_classes_to_skiils_classes_name_fk
+			references classes
+				on update cascade on delete set null,
+	skill varchar(256)
+		constraint from_classes_to_skiils_skills_name_fk
+			references skills
+				on update cascade on delete set null,
+	id serial not null
+);
+
+comment on table from_classes_to_skiils is 'many to many';
+
+create unique index from_classes_to_skiils_id_uindex
+	on from_classes_to_skiils (id);
+
+alter table from_classes_to_skiils
+	add constraint from_classes_to_skiils_pk
+		primary key (id);
+
+create table from_classes_to_abilities
+(
+	class varchar(256) not null
+		constraint from_classes_to_abilities_classes_name_fk
+			references classes
+				on update cascade on delete set null,
+	ability varchar(256) not null
+		constraint from_classes_to_abilities_abilities_name_fk
+			references abilities
+				on update cascade on delete set null,
+	id serial not null
+);
+
+create unique index from_classes_to_abilities_id_uindex
+	on from_classes_to_abilities (id);
+
+alter table from_classes_to_abilities
+	add constraint from_classes_to_abilities_pk
+		primary key (id);
+
+create table magic_skills
+(
+	name varchar(256) not null,
+	description varchar(4096) not null,
+	school varchar(256) not null
+		constraint magic_skills_schools_of_magic_name_fk
+			references schools_of_magic
+				on update cascade on delete set null,
+	target varchar(256) not null
+		constraint magic_skills_target_target_fk
+			references target
+				on update cascade on delete set null,
+	casting int not null,
+	duration int not null,
+	is_ritual boolean default false not null,
+	distance int not null,
+	level int not null,
+	damage_dice int not null
+		constraint magic_skills_dices_value_fk
+			references dices
+				on update cascade on delete set null,
+	damage_multiplier int default 1 not null,
+	component varchar(256) not null
+);
+
+create unique index magic_skills_name_uindex
+	on magic_skills (name);
+
+alter table magic_skills
+	add constraint magic_skills_pk
+		primary key (name);
+
+create table from_magic_skills_to_items
+(
+	magic_skill varchar(256) not null
+		constraint from_magic_skills_to_items_magic_skills_name_fk
+			references magic_skills
+				on update cascade on delete set null,
+	item varchar(256) not null
+		constraint from_magic_skills_to_items_items_name_fk
+			references items
+				on update cascade on delete set null,
+	id serial not null,
+	number_of_item int default 1 not null
+);
+
+comment on table from_magic_skills_to_items is 'many to many: list of components';
+
+create unique index from_magic_skills_to_items_id_uindex
+	on from_magic_skills_to_items (id);
+
+alter table from_magic_skills_to_items
+	add constraint from_magic_skills_to_items_pk
+		primary key (id);
+
+alter table from_classes_to_skiils
+	add required_level int default 0 not null;
+
+create table from_classes_to_magic_skills
+(
+	class varchar(256) not null
+		constraint from_classes_to_magic_skills_classes_name_fk
+			references classes
+				on update cascade on delete set null,
+	magic_skill varchar(256) not null
+		constraint from_classes_to_magic_skills_magic_skills_name_fk
+			references magic_skills
+				on update cascade on delete set null,
+	id serial not null,
+	required_level int default 0 not null
+);
+
+comment on table from_classes_to_magic_skills is 'many to many';
+
+create unique index from_classes_to_magic_skills_id_uindex
+	on from_classes_to_magic_skills (id);
+
+alter table from_classes_to_magic_skills
+	add constraint from_classes_to_magic_skills_pk
+		primary key (id);
+
+create sequence magic_sockets_id_seq;
+
+alter table magic_sockets rename column class_name to id;
+
+alter table magic_sockets alter column id type int using id::int;
+
+alter table magic_sockets alter column id set default nextval('public.magic_sockets_id_seq');
+
+alter sequence magic_sockets_id_seq owned by magic_sockets.class_name;
+
+alter table classes drop column magic_socket;
+
+alter table classes
+	add magic_socket int not null;
+
+
+alter table classes
+	add constraint classes_magic_sockets_id_fk
+		foreign key (magic_socket) references magic_sockets
+			on update cascade on delete set null;
+
+create table characteristics
+(
+	id serial not null,
+	strength int not null,
+	dexterity int not null,
+	constitution int not null,
+	intelligence int not null,
+	wisdom int not null,
+	charisma int not null
+);
+
+create unique index characteristics_id_uindex
+	on characteristics (id);
+
+alter table characteristics
+	add constraint characteristics_pk
+		primary key (id);
+
+create table races
+(
+	name varchar(256) not null,
+	description varchar(2048) not null,
+	size varchar(5) not null
+		constraint races_sizes_char_fk
+			references sizes
+				on update cascade on delete set null,
+	speed int not null
+		constraint races_speeds_speed_fk
+			references speeds
+				on update cascade on delete set null,
+	bonus int not null
+		constraint races_characteristics_id_fk
+			references characteristics
+				on update cascade on delete set null
+);
+
+create unique index races_name_uindex
+	on races (name);
+
+alter table races
+	add constraint races_pk
+		primary key (name);
+
+
+create table from_races_to_abilities
+(
+	race varchar(256) not null
+		constraint from_races_to_abilities_races_name_fk
+			references races (name)
+				on update cascade on delete set null,
+	ability varchar(256) not null
+		constraint from_races_to_abilities_abilities_name_fk
+			references abilities
+				on update cascade on delete set null,
+	id serial not null
+);
+
+comment on table from_races_to_abilities is 'many to many';
+
+create unique index from_races_to_abilities_id_uindex
+	on from_races_to_abilities (id);
+
+alter table from_races_to_abilities
+	add constraint from_races_to_abilities_pk
+		primary key (id);
+
+create table from_races_to_skills
+(
+	race varchar(256) not null
+		constraint from_races_to_skiils_races_name_fk
+			references races
+				on update cascade on delete set null,
+	skill varchar(256) not null
+		constraint from_races_to_skills_skills_name_fk
+			references skills
+				on update cascade on delete set null,
+	id serial not null
+);
+
+create unique index from_races_to_skills_id_uindex
+	on from_races_to_skills (id);
+
+alter table from_races_to_skills
+	add constraint from_races_to_skills_pk
+		primary key (id);
+
+create table from_race_to_magic_skills
+(
+	race varchar(256) not null
+		constraint from_race_to_magic_skills_races_name_fk
+			references races
+				on update cascade on delete set null,
+	magic_skill varchar(256) not null
+		constraint from_race_to_magic_skills_magic_skills_name_fk
+			references magic_skills
+				on update cascade on delete set null,
+	id serial not null
+);
+
+create unique index from_race_to_magic_skills_id_uindex
+	on from_race_to_magic_skills (id);
+
+alter table from_race_to_magic_skills
+	add constraint from_race_to_magic_skills_pk
+		primary key (id);
+
+create table characters
+(
+	id serial not null
+		constraint characters_pk
+			primary key,
+	name varchar(256) not null,
+	exp integer not null,
+	characteristics integer not null
+		constraint characters_characteristics_id_fk
+			references characteristics
+				on update cascade on delete set null,
+	race varchar(256) not null
+		constraint characters_races_name_fk
+			references races
+				on update cascade on delete set null,
+	class varchar(256) not null
+		constraint characters_classes_name_fk
+			references classes
+				on update cascade on delete set null,
+	backstory varchar(256) not null
+		constraint characters_backstories_name_fk
+			references backstories
+				on update cascade on delete set null,
+	armor varchar(256) not null
+		constraint characters_armors_name_fk
+			references armors
+				on update cascade on delete set null,
+	shield varchar(256)
+		constraint characters_shields_name_fk
+			references shields
+				on update cascade on delete set null,
+	pounch integer not null
+		constraint characters_pounches_id_fk
+			references pounches
+				on update cascade on delete set null
+);
+
+alter table characters owner to postgres;
+
+create unique index characters_id_uindex
+	on characters (id);
+
+create table npc
+(
+	id serial not null,
+	name varchar(256) not null,
+	description varchar(4096) not null,
+	characteristics int
+		constraint npc_characteristics_id_fk
+			references characteristics
+				on update cascade on delete set null
+);
+
+create unique index npc_id_uindex
+	on npc (id);
+
+alter table npc
+	add constraint npc_pk
+		primary key (id);
+
+create table quests
+(
+	id serial not null,
+	name varchar(256),
+	description varchar(10240) not null,
+	reward int
+		constraint quests_pounches_id_fk
+			references pounches
+				on update cascade on delete set null,
+	exp int
+);
+
+create unique index quests_id_uindex
+	on quests (id);
+
+alter table quests
+	add constraint quests_pk
+		primary key (id);
+
+create table beasts
+(
+	name varchar(256),
+	description varchar(4096) not null,
+	characteristics int not null
+		constraint beasts_characteristics_id_fk
+			references characteristics
+);
+
+create table location
+(
+	id serial not null,
+	name varchar(256) not null,
+	description varchar(10240) not null
+);
+
+create unique index location_id_uindex
+	on location (id);
+
+alter table location
+	add constraint location_pk
+		primary key (id);
+
+create table npcs_on_location
+(
+	location int not null
+		constraint npcs_on_location_location_id_fk
+			references location
+				on update cascade on delete set null,
+	npc int not null
+		constraint npcs_on_location_npc_id_fk
+			references npc
+				on update cascade on delete set null,
+	number int default 1 not null
+);
+
+alter table beasts alter column name set not null;
+
+create unique index beasts_name_uindex
+	on beasts (name);
+
+alter table beasts
+	add constraint beasts_pk
+		primary key (name);
+
+
+
+create table beasts_on_location
+(
+	beast varchar(256) not null
+		constraint beasts_on_location_beasts_name_fk
+			references beasts (name)
+				on update cascade on delete set null,
+	location int not null
+		constraint beasts_on_location_location_id_fk
+			references location
+				on update cascade on delete set null,
+	number int default 1 not null
+);
+
+
+create table quests_on_location
+(
+	quest int not null
+		constraint quests_on_location_quests_id_fk
+			references quests
+				on update cascade on delete set null,
+	location int not null
+		constraint quests_on_location_location_id_fk
+			references location
+				on update cascade on delete set null
+);
+
+create table npcs_in_quest
+(
+	npc int not null
+		constraint npcs_in_quest_npc_id_fk
+			references npc
+				on update cascade on delete set null,
+	npc_role varchar(10240) not null,
+	quest int
+		constraint npcs_in_quest_quests_id_fk
+			references quests
+				on update cascade on delete set null,
+	npc_number int default 1 not null
+);
+
+alter table shields
+	add price int not null;
+
+alter table shields
+	add weight int;
+
+create table from_race_to_ability
+(
+	race varchar(256) not null
+		constraint table_name_races_name_fk
+			references races
+				on update cascade on delete set null,
+	ability varchar(256) not null
+		constraint table_name_abilities_name_fk
+			references abilities
+				on update cascade on delete set null
+);
+
+alter table from_race_to_ability owner to postgres;
+
+alter table beasts
+	add ac int not null;
+
+alter table beasts
+	add danger decimal;
+
+alter table target rename to targets;
+
+create table users
+(
+	id serial not null,
+	username varchar(256) not null,
+	password varchar(256) not null
+);
+
+create unique index users_id_uindex
+	on users (id);
+
+create unique index users_username_uindex
+	on users (username);
+
+alter table users
+	add constraint users_pk
+		primary key (id);
+
+create table roles
+(
+	id serial not null
+		constraint roles_pk
+			primary key,
+	name varchar(256) not null
+);
+
+alter table roles owner to postgres;
+
+create unique index roles_id_uindex
+	on roles (id);
+
+create table user_roles
+(
+	user_id int not null
+		constraint user_roles_users_id_fk
+			references users,
+	role_id int not null
+		constraint user_roles_roles_id_fk
+			references roles
+);
+
+create unique index user_roles_role_id_uindex
+	on user_roles (role_id);
+
+create unique index user_roles_user_id_uindex
+	on user_roles (user_id);
+
+
+alter table from_race_to_ability
+	add id serial not null;
+
+create unique index from_race_to_ability_id_uindex
+	on from_race_to_ability (id);
+
+alter table from_race_to_ability
+	add constraint from_race_to_ability_pk
+		primary key (id);
+
+alter table npcs_in_quest
+	add id serial not null;
+
+create unique index npcs_in_quest_id_uindex
+	on npcs_in_quest (id);
+
+alter table npcs_in_quest
+	add constraint npcs_in_quest_pk
+		primary key (id);
+
+alter table npcs_on_location
+	add id serial not null;
+
+create unique index npcs_on_location_id_uindex
+	on npcs_on_location (id);
+
+alter table npcs_on_location
+	add constraint npcs_on_location_pk
+		primary key (id);
+
+alter table quests_on_location
+	add id serial not null;
+
+create unique index quests_on_location_id_uindex
+	on quests_on_location (id);
+
+alter table quests_on_location
+	add constraint quests_on_location_pk
+		primary key (id);
+
+alter table weapons
+	add properties varchar(10240);
+
+alter table abilities
+	add items varchar(10240);
+
+alter table abilities
+	add armortypes varchar(10240);
+
+alter table abilities
+	add weaponcategories varchar(10240);
+
+alter table backstories
+	add items varchar(10240);
+
+alter table backstories
+	add abilities varchar(10240);
+
+alter table magic_skills
+	add items varchar(10240);
+
+alter table classes
+	add abilities varchar(10240);
+
+alter table classes alter column magic_socket set default NULL;
+
+alter table classes
+	add magics varchar(10240);
+
+alter table classes
+	add skills varchar(10240);
+
+alter table classes drop constraint classes_magic_sockets_id_fk;
+
+alter table classes
+	add constraint classes_magic_sockets_id_fk
+		foreign key (magic_socket) references magic_sockets
+			on update cascade on delete set null;
+
+alter table races
+	add abilities varchar(10240);
+
+alter table races
+	add magics varchar(10240);
+
+alter table races
+	add skills varchar(10240);
+
+alter table characters
+	add str int;
+
+alter table characters
+	add dex int;
+
+alter table characters
+	add con int;
+
+alter table characters
+	add inl int;
+
+alter table characters
+	add wsd int;
+
+alter table characters
+	add chr int;
+
+alter table characters drop constraint characters_characteristics_id_fk;
+
+alter table characters drop column characteristics;
+
+alter table characters
+	add constraint characters_characteristics_id_fk
+		foreign key (characteristics) references characteristics
+			on update cascade on delete set null;
+
+alter table races
+	add str int;
+
+alter table races
+	add dex int;
+
+alter table races
+	add con int;
+
+alter table races
+	add inl int;
+
+alter table races
+	add wsd int;
+
+alter table races
+	add chr int;
+
+alter table races drop constraint races_characteristics_id_fk;
+
+alter table races drop column bonus;
+
+alter table races
+	add constraint races_characteristics_id_fk
+		foreign key (bonus) references characteristics
+			on update cascade on delete set null;
+
+alter table characters drop constraint characters_shields_name_fk;
+
+alter table characters drop column shield;
+
+alter table characters
+	add constraint characters_shields_name_fk
+		foreign key (shield) references shields
+			on update cascade on delete set null;
+
+alter table characters drop constraint characters_pounches_id_fk;
+
+alter table characters drop column pounch;
+
+alter table characters
+	add constraint characters_pounches_id_fk
+		foreign key (pounch) references pounches
+			on update cascade on delete set null;
+
+alter table characters
+	add player_name varchar(256);
+
+alter table characters
+	add abilities varchar(10240);
+
+alter table characters
+	add skills varchar(10240);
+
+alter table characters
+	add magics VARCHAR(10240);
+
+alter table characters
+	add items varchar(10240);
+
+alter table characters
+	add money int;
+
+alter table characters drop constraint characters_armors_name_fk;
+
+alter table location
+	add nps varchar(20480);
+
+alter table location
+	add quests varchar(20480);
+
+alter table quests
+	add npc varchar(20480);
+

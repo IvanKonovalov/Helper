@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>templates</title>
+</head>
+<body>
+<div th:fragment="navbar">
+    <ul class="nav m-3 p-3">
+        <div class="row">
+            <li class="nav-item m-2"><img src="images/logo.png" width="168px" height="52px" alt="logo"></li>
+        </div>
+    </ul>
+</div>
+
+<div th:fragment="sidepanel" class="col-md-3 pl-2 pr-2">
+    <div>
+        <div class="list-group">
+            <a href="/" class="list-group-item text-justify">
+                <img src="images/left.png" height="30px" width="30px">На главную
+            </a>
+            <a href="/choose" class="list-group-item text-justify">
+                <img src="images/left.png" height="30px" width="30px">К режиму игры
+            </a>
+            <a href="/race" class="list-group-item text-justify"> Расы </a>
+            <a href="/class" class="list-group-item text-justify"> Классы </a>
+            <a href="/backstory" class="list-group-item text-justify"> Предыстории </a>
+            <a href="/weapon" class="list-group-item text-justify"> Список оружия </a>
+            <a href="/armor" class="list-group-item text-justify"> Список брони </a>
+            <a href="/skill" class="list-group-item text-justify"> Навыки </a>
+            <a href="/magic" class="list-group-item text-justify"> Магия </a>
+            <a href="/ability" class="list-group-item text-justify"> Способности </a>
+            <a href="/item" class="list-group-item text-justify"> Предметы </a>
+            <a href="/other" class="list-group-item text-justify"> Разное </a>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="sidepanelGM" class="col-md-3 pl-2 pr-2">
+    <div>
+        <div class="list-group">
+            <a href="/" class="list-group-item text-justify">
+                <img src="images/left.png" height="30px" width="30px"> На главную
+            </a>
+            <a href="/beasts" class="list-group-item text-justify"> Бестиарий</a>
+            <a href="/locations" class="list-group-item text-justify"> Локации </a>
+            <a href="/quests" class="list-group-item text-justify"> Квесты </a>
+            <a href="/npcs" class="list-group-item text-justify"> NPC </a>
+            <a href="/" class="list-group-item text-justify"> Сводка </a>
+        </div>
+    </div>
+</div>
+
+<footer th:fragment="footer">
+    <footer>
+        <div class="container">
+
+        </div>
+    </footer>
+</footer>
+
+<!-- список свойств под спойлером -->
+<div id="accordion" role="tablist" aria-multiselectable="true">
+    <!-- Таблица property -->
+    <div class="card">
+        <div class="card-header" role="tab" id="headingOne">
+            <h5 class="mb-0">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+                   aria-controls="collapseOne">
+                    Свойства
+                </a>
+            </h5>
+        </div>
+        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+            <div class="card-block">
+                <table class="table table-sm table-responsive">
+                    <tbody>
+                    <tr>
+                        <td><input type="checkbox"/></td>
+                        <td>name</td>
+                        <td>Description</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+</script>
+</body>
+</html>
